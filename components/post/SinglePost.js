@@ -10,7 +10,7 @@ import FONTS from "../../config/FONTS";
 
 const SinglePost = ({ post, navigation }) => {
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate("DetailedPost")}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate("DetailedPost", {postId: post.id})}>
       <View
         style={{
           paddingHorizontal: moderateScale(15),

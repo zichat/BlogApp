@@ -23,6 +23,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DetailedPost from "./screens/DetailedPost";
+import CreatePost from "./screens/CreatePost";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +51,8 @@ function HomeStackScreen() {
         name="HomeScreen"
         component={HomeScreen}
       />
-      <HomeStack.Screen name="DetailedPost" component={DetailedPost} />
+      <HomeStack.Screen options={{headerTitle: "Post Details"}} name="DetailedPost" component={DetailedPost} />
+      <HomeStack.Screen options={{headerTitle: "Create Post"}} name="CreatePost" component={CreatePost} />
     </HomeStack.Navigator>
   );
 }
