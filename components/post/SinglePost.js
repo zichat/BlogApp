@@ -61,7 +61,7 @@ const SinglePost = ({ post, navigation }) => {
               fontSize: FONTS.smallFont,
             }}
           >
-            {post.content.substring(0, 100)}
+            {post.body.substring(0, 150)}
           </Text>
         </View>
       </View>

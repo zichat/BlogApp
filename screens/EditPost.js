@@ -4,44 +4,36 @@ import { verticalScale, moderateScale, scale } from "react-native-size-matters";
 import COLORS from "../config/COLORS";
 import FONTS from "../config/FONTS";
 import { useDispatch, useSelector } from "react-redux";
-import { postAdded } from "../redux/features/posts/postsSlice";
-import { useAddNewPostMutation } from "../redux/features/api/apiSlice";
+import { postUpdated } from "../redux/features/posts/postsSlice";
 
-const tags = ["history", "american", "crime"];
-const reactions = 1;
-const userId = 2;
-const Id = 202;
+const EditPost = ({ route, navigation }) => {
 
-const CreatePost = ({ navigation }) => {
-  const [addNewPost, { isLoading }] = useAddNewPostMutation();
+  const { postId } = route.params;
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const post = useSelector(state =>
+    state.posts.find(post => post.id === postId)
+  )
 
-  const [userId, setUserId] = useState(9);
-
-  const canSave = [title, content].every(Boolean) && !isLoading;
-
-  const users = useSelector((state) => state.users);
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
 
   const onTitleChange = (text) => setTitle(text);
   const onContentChange = (text) => setContent(text);
 
   const dispatch = useDispatch();
 
-  const onSavePostClicked = async () => {
-    if (canSave) {
-      try {
-        await addNewPost({ Id, title, body: content, userId, tags, reactions });
-      } catch (e) {
-        console.error("failed to add new post", e);
-      }
+  const onSavePostClicked = () => {
+    if (title && content) {
+      dispatch(
+        postUpdated({
+          id: postId,
+          title,
+          content,
+        })
+      );
+
+      navigation.push("DetailedPost", {postId: post.id})
     }
-
-    setTitle("");
-    setContent("");
-
-    navigation.navigate("DetailedPost", {postId: Id})
   };
 
   return (
@@ -116,4 +108,4 @@ const CreatePost = ({ navigation }) => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

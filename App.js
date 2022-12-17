@@ -24,7 +24,9 @@ import store from "./redux/store";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DetailedPost from "./screens/DetailedPost";
 import CreatePost from "./screens/CreatePost";
-
+import EditPost from "./screens/EditPost";
+import { ApiProvider } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "./redux/features/api/apiSlice";
 const Tab = createBottomTabNavigator();
 
 const HomeStack = createNativeStackNavigator();
@@ -53,6 +55,7 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen options={{headerTitle: "Post Details"}} name="DetailedPost" component={DetailedPost} />
       <HomeStack.Screen options={{headerTitle: "Create Post"}} name="CreatePost" component={CreatePost} />
+      <HomeStack.Screen options={{headerTitle: "Edit Post"}} name="EditPost" component={EditPost} />
     </HomeStack.Navigator>
   );
 }
@@ -85,7 +88,7 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
+    <ApiProvider api={apiSlice}>
       <NavigationContainer
         onReady={onLayoutRootView}
         theme={scheme === "dark" ? DarkTheme : LightTheme}
@@ -140,6 +143,6 @@ export default function App() {
           <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
       </NavigationContainer>
-    </Provider>
+    </ApiProvider>
   );
 }

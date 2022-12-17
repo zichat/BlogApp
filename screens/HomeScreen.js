@@ -1,21 +1,47 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import React from "react";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
-import SinglePost from "../components/post/SinglePost";
-import { useSelector } from "react-redux";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FONTS from "../config/FONTS";
+import { useGetPostsQuery } from "../redux/features/api/apiSlice";
+import SinglePost from "../components/post/SinglePost";
 
 const HomeScreen = ({ navigation }) => {
-  const posts = useSelector((state) => state.posts);
+  const {
+    data: posts,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetPostsQuery();
 
   return (
     <>
-      <ScrollView style={{ paddingVertical: verticalScale(10) }}>
+      {/* <ScrollView style={{ paddingVertical: verticalScale(10) }}>
         {posts.map((post) => (
           <SinglePost key={post.id} navigation={navigation} post={post} />
         ))}
-      </ScrollView>
+      </ScrollView> */}
+
+      {isLoading ? (
+        <Text>isLoading</Text>
+      ) : ((isSuccess)?(
+        <FlatList
+          data={posts.posts}
+          renderItem={({ item }) => (
+            <SinglePost key={item.id} navigation={navigation} post={item} />
+          )}
+          keyExtractor={(item) => item.id}
+        />): ((isError)?(<Text> {`${error.status} ${error.error}`}</Text> ):null)
+      )}
+
+      
 
       <TouchableOpacity
         onPress={() => navigation.navigate("CreatePost")}
